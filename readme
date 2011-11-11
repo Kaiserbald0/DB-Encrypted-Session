@@ -1,0 +1,27 @@
+########################
+#   mySession ReadMe   #
+########################
+
+Read this file before use mySession class.
+
+Where find:
+ - main class file: mySession.class.php
+ - configuration file: mySession.conf.php
+ - Sql database structure: mysql.sql
+ - Change Log: change_log.htm
+ - How to: howto.htm
+ - License:  gpl-license.html
+ - Example: in the "example/" directory
+
+The actual version is: MySession 2.0
+
+Before using mysessionClass check the md5sum.
+
+ee04d7ce9c32870cd8ca49965bafd0a3  mySession.class.php
+7d40e2a2e21b07da2c047231c10c0461  mysql.sql
+5b57bbab575a5b774465d70761796f91  mySession.conf.php
+
+If some file do not pass the md5sum test, ask for the
+file to kaiserbaldo[]gmail.com
+
+Thanks for reading

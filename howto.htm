@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+
+
+  
+  <style type="text/css">
+<!--
+.bordino {
+	border: medium dashed #999999;
+}
+-->
+  </style><title>HowTo</title></head><body>
+<p align="center"><strong>My Session How-To</strong></p>
+
+<strong>Creating the database </strong>: Execute
+the istruction written in the file mysql.sql
+<p><strong>Strating</strong>: Include the files "my_session.class.php"
+and "my_session.conf.php" in your script.</p>
+
+<p class="bordino">...<br>
+include("my_session.class.php");<br>
+include("my_session.conf.php"); <br>
+... </p>
+
+<p>Create a new object:</p>
+
+<p class="bordino">$session = mySession::getIstance($_MYSESSION_CONF);</p>
+
+<p>Doing this you start a new session or recover an old one
+automatically.<br>
+</p>
+<p style="font-weight: bold; font-style: italic; text-decoration: underline;">You can choose to overwrite the PHP default function, so you can use normal session function, or using class defined method.<br>
+</p>
+<p><span style="text-decoration: underline; font-style: italic; font-weight: bold;"><span style="font-weight: bold; font-style: italic; text-decoration: underline;">Using PHP default function is easy, just set true the OVERWRITE_PHP_FUNCTION in the configuration file.</span><br>
+<br style="text-decoration: underline; font-style: italic; font-weight: bold;">
+</span>
+If you choose to use class built in method they are listed below.<br>
+</p>
+
+
+<p><strong>Registering a variabile</strong>:<br>
+You have 2 way to register a variable. <br>
+The first way is to use the <span style="font-style: italic;">$session-&gt;save(NAME,VARIABLE)
+</span>method that allow you to save a variable to the session giving
+it a name<br>
+</p>
+
+<p class="bordino">...<br>
+$session-&gt;save("cane","foo");<br>
+...<br>
+</p>
+
+<p><strong><span style="font-weight: normal;">Doing this you save into
+the session a variable named "cane" with the value of "foo".<br>
+(It the
+equivalent that: $_SESSION["cane"] = "foo" using standard php session)<br>
+</span></strong></p>
+
+<p><strong><span style="font-weight: normal;">The second way is to use
+the <span style="font-style: italic;">$session-&gt;register(VARIABLE)</span>
+method that allow you to directly save your vars with the name you
+gived it before.<br>
+</span></strong></p>
+
+<p class="bordino">...<br>
+$myArray["foo"] = 9;<br>
+$myArray["bar"] = 10;<br>
+<br>
+$session-&gt;register($myArray);<br>
+...<br>
+</p>
+
+<p><strong><span style="font-weight: normal;">Doing this you save into the session a variable named "myArray" that is the $myArray.<br>
+</span></strong><strong><span style="font-weight: normal;">(It the
+equivalent that: $_SESSION["myArray"] = $myArray using standard php session)</span></strong><br>
+</p>
+
+<p><strong>Retriving a variable from session</strong>:</p>
+
+<p class="bordino">$session-&gt;getVar(NAME);<br>
+es: $session-&gt;getVar("cane");<br>
+or<br>
+$session-&gt;VARS[NAME];<br>
+es: $session-&gt;VARS["cane"];</p>
+
+<p><strong>Deleting a session variables </strong>:</p>
+
+<p class="bordino">$session-&gt;delete(NAME); <br>
+es: $session-&gt;delete("SessionArray");</p>
+<p><strong>The Config file: </strong><br>
+The file is splitted in section. The fist on is the database section.<br>
+<br>
+<strong>$_MYSESSION_CONF['DATABASE_TYPE']</strong>&nbsp; type of the db, only
+mysql is supported <br>
+Connection Data:<br>
+<strong>$_MYSESSION_CONF['DB_DATABASE']</strong> database name<br>
+<strong>$_MYSESSION_CONF['DB_PASSWORD']</strong> database password <br>
+<strong>$_MYSESSION_CONF['DB_SERVER']</strong> database server <br>
+<strong>$_MYSESSION_CONF['DB_USERNAME'] </strong>database user <br>
+Table data <br>
+<strong>$_MYSESSION_CONF['TB_NAME']</strong> table name that store sessions<br>
+<strong>$_MYSESSION_CONF['SID']</strong> "sessiond id" column name <br><strong>$_MYSESSION_CONF['EXP'] </strong>name of the column that store
+the expire date of the session<br>
+<span style="font-weight: bold;">$_MYSESSION_CONF['FEXP']</span> name of the column that store
+the forced expire date of the session<br>
+<span style="font-weight: bold;">$_MYSESSION_CONF['TB_NAME_VALUE']</span> name of the table that store session's vars<br>
+
+<strong>$_MYSESSION_CONF['NAME']</strong> name of the column that store
+the name of the session vars <br>
+
+<strong>$_MYSESSION_CONF['VALUE']</strong> name of the column that
+store the value of the session vars <br>
+
+<strong></strong><br>
+<br>
+<span class="bordino">CAUTION: If you are using the query from the
+mysql.sql file don't change the Table data</span><br>
+<br>
+General Configuration<br>
+
+<strong>$_MYSESSION_CONF['OVERWRITE_PHP_FUNCTION']</strong> overwrite default PHP function<br>
+<strong>$_MYSESSION_CONF['SID_LEN']</strong> the length of the univoque
+string user for the session_id <br>
+<strong>$_MYSESSION_CONF['DURATION'] </strong>duration of the session
+(seconds) <br>
+<strong>$_MYSESSION_CONF['MAX_DURATION']</strong> max duration of the
+session (seconds). When this time is over the session will be destroyed<br>
+<strong>$_MYSESSION_CONF['SESSION_VAR_NAME']</strong> name of the
+variable that store the session id (Ex: PHPSESSID).<br>
+<strong>$_MYSESSION_CONF['USE_COOKIE']</strong> if true cookie are used
+to store the sessiond id, otherwise it is necessary to add to every
+links the session id. Es :
+index.php?MY_SESSIONID=$_REQUEST["MY_SESSIONID"]<br>
+<strong>$_MYSESSION_CONF['CRIPT']</strong> if true all data stored in
+the database will be crypted. <br>
+<strong>$_MYSESSION_CONF['CRIPT_KEY']</strong> the encrypt key. <br>
+<strong>$_MYSESSION_CONF['ENABLE_ANTI_HIJACKING']</strong> Use UserAgent check to prevent Hijacking. If UserAgent check fail, session will be ended.<br>
+<strong>$_MYSESSION_CONF['ANTI_HIJACKING_SALT']</strong> The salt used to adding more security to the UserAgent check<br>
+</p>
+
+
+
+<p>Foud a bugs? info @ marcobaldini . com </p>
+
+<p>Big Love and Respect For Every One </p>
+
+</body></html>
