@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  *
  * My Session Class By Marco Baldini (kaiserbaldo@gmail.com)
@@ -13,11 +13,11 @@
  *
  * @author Marco Baldini
  *
- * @copyright 2010 Marco Baldini
+ * @copyright 2013 Marco Baldini
  *
  * @license GNU General Public License, version 2 (GPLv2)
  *
- * @version MySession 2.0
+ * @version MySession 2.1
  *
  * @example example/cookieBasedSessionUsingClassMethod/start.php
  *          <i>An example of how using this class and passing SessionId using cookie</i>
@@ -358,7 +358,7 @@ class mySession
      * The SQL Statement used for deleting a session vars if the vars are encrypted
      *
      * @uses $SQLStatement_DeleteSessionVars->bindParam(':sid', $sid, PDO::PARAM_STR, $this->sid_len);
-     *       $SQLStatement_DeleteSessionVars->bindParam(':nome', $nome, PDO::PARAM_STR);
+     *       $SQLStatement_DeleteSessionVars->bindParam(':name', $name, PDO::PARAM_STR);
      *
      * @var PDO Statement
      */
@@ -368,7 +368,7 @@ class mySession
      * The SQL Statement used for deleting a session vars if the vars are encrypted
      *
      * @uses $SQLStatement_DeleteSessionVars->bindParam(':sid', $sid, PDO::PARAM_STR, $this->sid_len);
-     *       $SQLStatement_DeleteSessionVars->bindParam(':nome', $nome, PDO::PARAM_STR);
+     *       $SQLStatement_DeleteSessionVars->bindParam(':name', $name, PDO::PARAM_STR);
      *
      * @var PDO Statement
      */
@@ -378,8 +378,8 @@ class mySession
      * The SQL Statement used for insert a session vars if the vars are not encrypted
      *
      * @uses $SQLStatement_InsertSessionVars->bindParam(':sid', $sid, PDO::PARAM_STR, $this->sid_len);
-     *       $SQLStatement_InsertSessionVars->bindParam(':nome', $nome, PDO::PARAM_STR);
-     *       $SQLStatement_InsertSessionVars->bindParam(':valore', $value, PDO::PARAM_STR);
+     *       $SQLStatement_InsertSessionVars->bindParam(':name', $name, PDO::PARAM_STR);
+     *       $SQLStatement_InsertSessionVars->bindParam(':value', $value, PDO::PARAM_STR);
      *
      * @var PDO Statement
      */
@@ -389,8 +389,8 @@ class mySession
      * The SQL Statement used for insert a session vars if the vars are not encrypted
      *
      * @uses $SQLStatement_InsertEncryptedSessionVars->bindParam(':sid', $sid, PDO::PARAM_STR, $this->sid_len);
-     *       $SQLStatement_InsertEncryptedSessionVars->bindParam(':nome', $nome, PDO::PARAM_STR);
-     *       $SQLStatement_InsertEncryptedSessionVars->bindParam(':valore', $value, PDO::PARAM_STR);
+     *       $SQLStatement_InsertEncryptedSessionVars->bindParam(':name', $name, PDO::PARAM_STR);
+     *       $SQLStatement_InsertEncryptedSessionVars->bindParam(':value', $value, PDO::PARAM_STR);
      *
      * @var PDO Statement
      */
@@ -413,8 +413,8 @@ class mySession
      * @param string $name Variable name
      * @return object Store variable
      */
-    public function getVar($nome) {
-            return $this->VARS[$nome];
+    public function getVar($name) {
+            return $this->VARS[$name];
     }
 
     /**
@@ -461,12 +461,12 @@ class mySession
      *
      * @access public
      *
-     * @param string $nome The name of the session variable
-     * @param string $valore The value of the session variable.
+     * @param string $name The name of the session variable
+     * @param string $value The value of the session variable.
      */
-    public function save($nome,$valore) {                   
+    public function save($name,$value) {                   
                     
-                    $this->finalizeSaving($nome, $valore);
+                    $this->finalizeSaving($name, $value);
     }
 
     /**
@@ -474,7 +474,7 @@ class mySession
      *
      * @access public
      *
-     * @param object $nome The variable to save. This variable is saved into the
+     * @param object $name The variable to save. This variable is saved into the
      *                     session array with the name of the saved variable
      *
      * @example $myVars = "fooo";<br>
@@ -482,9 +482,9 @@ class mySession
      *          <br>
      *          The vars array will be: $this->VARS["myVars"] = "fooo";
      */
-    public function register(&$nome) {
+    public function register(&$name) {
                     
-                    $this->finalizeSaving($this->varName($nome), $nome);
+                    $this->finalizeSaving($this->varName($name), $name);
 
     }
 
@@ -511,11 +511,11 @@ class mySession
      *
      * @access public
      *
-     * @param string $nome Variable name
+     * @param string $name Variable name
      */
-    public function delete($nome) {
+    public function delete($name) {
 
-                    $this->del($nome);
+                    $this->del($name);
                     $this->loadSesionVars();
     }
 
@@ -550,7 +550,7 @@ class mySession
             $dati = $this->selectSessionVars();
 
             foreach($dati as $infos) {            
-                    $this->VARS[$infos["nome"]]=unserialize($infos["valore"]);
+                    $this->VARS[$infos["name"]]=unserialize($infos["value"]);
             }
 
     }
@@ -715,12 +715,12 @@ class mySession
     private function generateString($length)
     {
 
-            $alfabeto="qazxswedcvfrtgbnhyujmklpoi0987654321";
+            $alphabet="qazxswedcvfrtgbnhyujmklpoi0987654321";
             $ris='';
 
             for ($i=0; $i < $length; $i++) {
                     srand($this->makeSeed());
-                    $ris .= $alfabeto[rand(0,(strlen($alfabeto)-1))];
+                    $ris .= $alphabet[rand(0,(strlen($alphabet)-1))];
             }
 
             return($ris);
@@ -926,8 +926,8 @@ class mySession
     {       
         
         $myData = $this->unserializePhpSession($session_data);
-        foreach ($myData as $nome => $valore) {
-            $this->save($nome, $valore);
+        foreach ($myData as $name => $value) {
+            $this->save($name, $value);
         }
         return true;
     }
@@ -1041,22 +1041,22 @@ class mySession
         $this->SQLStatement_GetSessionInfos = $this->connessione->prepare("SELECT * FROM ".$tabella_sessioni." WHERE ".$this->table_column_sid." = :sid");
 
         /*** SQL statement: Get Session Vars ***/
-        $this->SQLStatement_GetSessionVars = $this->connessione->prepare("SELECT ".$this->table_column_value." as valore, ".$this->table_column_name." as nome FROM ".$tabella_variabili." WHERE ".$this->table_column_sid." = :sid");
+        $this->SQLStatement_GetSessionVars = $this->connessione->prepare("SELECT ".$this->table_column_value." as value, ".$this->table_column_name." as name FROM ".$tabella_variabili." WHERE ".$this->table_column_sid." = :sid");
         
         /*** SQL statement: Get Encrypted Session Vars ***/
-        $this->SQLStatement_GetEncryptedSessionVars = $this->connessione->prepare("SELECT AES_DECRYPT(".$this->table_column_value.",'".$this->encrypt_key."') as valore,AES_DECRYPT(".$this->table_column_name.",'".$this->encrypt_key."') as nome FROM ".$tabella_variabili." WHERE ".$this->table_column_sid." = :sid");
+        $this->SQLStatement_GetEncryptedSessionVars = $this->connessione->prepare("SELECT AES_DECRYPT(".$this->table_column_value.",'".$this->encrypt_key."') as value,AES_DECRYPT(".$this->table_column_name.",'".$this->encrypt_key."') as name FROM ".$tabella_variabili." WHERE ".$this->table_column_sid." = :sid");
 
         /*** SQL statement: Delete Session Vars ***/
-        $this->SQLStatement_DeleteSessionVars = $this->connessione->prepare("DELETE FROM ".$tabella_variabili."  WHERE ".$this->table_column_sid." = :sid AND ".$this->table_column_name."= :nome ");
+        $this->SQLStatement_DeleteSessionVars = $this->connessione->prepare("DELETE FROM ".$tabella_variabili."  WHERE ".$this->table_column_sid." = :sid AND ".$this->table_column_name."= :name ");
 
         /*** SQL statement: Delete Encrypted Session Vars ***/
-        $this->SQLStatement_DeleteEncryptedSessionVars = $this->connessione->prepare("DELETE FROM ".$tabella_variabili."  WHERE ".$this->table_column_sid." = :sid AND ".$this->table_column_name."= AES_ENCRYPT(:nome,'".$this->encrypt_key."') ");
+        $this->SQLStatement_DeleteEncryptedSessionVars = $this->connessione->prepare("DELETE FROM ".$tabella_variabili."  WHERE ".$this->table_column_sid." = :sid AND ".$this->table_column_name."= AES_ENCRYPT(:name,'".$this->encrypt_key."') ");
 
         /*** SQL statement: Insert Session Vars ***/
-        $this->SQLStatement_InsertSessionVars = $this->connessione->prepare("INSERT INTO ".$tabella_variabili."(".$this->table_column_sid.",".$this->table_column_name.",".$this->table_column_value.") VALUE(:sid,:nome,:valore)");
+        $this->SQLStatement_InsertSessionVars = $this->connessione->prepare("INSERT INTO ".$tabella_variabili."(".$this->table_column_sid.",".$this->table_column_name.",".$this->table_column_value.") VALUE(:sid,:name,:value)");
 
         /*** SQL statement: Insert Encrypted Session Vars ***/
-        $this->SQLStatement_InsertEncryptedSessionVars = $this->connessione->prepare("INSERT INTO ".$tabella_variabili."(".$this->table_column_sid.",".$this->table_column_name.",".$this->table_column_value.") VALUE(:sid,AES_ENCRYPT(:nome,'".$this->encrypt_key."'),AES_ENCRYPT(:valore,'".$this->encrypt_key."'))");
+        $this->SQLStatement_InsertEncryptedSessionVars = $this->connessione->prepare("INSERT INTO ".$tabella_variabili."(".$this->table_column_sid.",".$this->table_column_name.",".$this->table_column_value.") VALUE(:sid,AES_ENCRYPT(:name,'".$this->encrypt_key."'),AES_ENCRYPT(:value,'".$this->encrypt_key."'))");
 
         /*** SQL statement: Delete Session ***/
         $this->SQLStatement_DeleteSession = $this->connessione->prepare("DELETE FROM ".$tabella_sessioni."  WHERE ".$this->table_column_sid." = :sid ");
@@ -1129,21 +1129,21 @@ class mySession
      * Send a delete query to the DBMS
      *
      * Query will be created according to this prototype:
-     * DELETE FROM $db.$tabelle WHERE $cond
+     * DELETE FROM $db.$table WHERE $cond
      *
      * @access private
-     * @param string $nome: name of the variable to delete from session
+     * @param string $name: name of the variable to delete from session
      * @return boolean - True if the query succesfully done. False in any other case
      */
-    private function del($nome) {
+    private function del($name) {
 
         if ($this->encrypt_data==1) {
              $this->SQLStatement_DeleteEncryptedSessionVars->bindParam('sid', $this->sessionId, PDO::PARAM_STR, $this->sid_len);
-             $this->SQLStatement_DeleteEncryptedSessionVars->bindParam('nome', $nome, PDO::PARAM_STR);
+             $this->SQLStatement_DeleteEncryptedSessionVars->bindParam('name', $name, PDO::PARAM_STR);
              $result = $this->SQLStatement_DeleteEncryptedSessionVars->execute();
         } else {
              $this->SQLStatement_DeleteSessionVars->bindParam('sid', $this->sessionId, PDO::PARAM_STR, $this->sid_len);
-             $this->SQLStatement_DeleteSessionVars->bindParam('nome', $nome, PDO::PARAM_STR);
+             $this->SQLStatement_DeleteSessionVars->bindParam('name', $name, PDO::PARAM_STR);
              $result = $this->SQLStatement_DeleteSessionVars->execute();
         }
 
@@ -1155,29 +1155,29 @@ class mySession
      * Send an insert query to the DBMS
      *
      * Query will be created according to this prototype:
-     * INSERT INTO $db.$tabelle SET $nome = $valore
+     * INSERT INTO $db.$tabelle SET $name = $value
      *
      * @access private
-     * @param string $nome: variable name
+     * @param string $name: variable name
      * @param string $val: variable value
      * @return boolean - True if the query succesfully done. False in any other case
      */
-    private function insert($nome,$val) {
+    private function insert($name,$val) {
 
        if ($this->encrypt_data==1) {
 
              $this->SQLStatement_InsertEncryptedSessionVars->bindParam('sid', $this->sessionId, PDO::PARAM_STR, $this->sid_len);
-             $this->SQLStatement_InsertEncryptedSessionVars->bindParam('nome', $nome, PDO::PARAM_STR);
-             $this->SQLStatement_InsertEncryptedSessionVars->bindParam('valore', $val, PDO::PARAM_STR);
+             $this->SQLStatement_InsertEncryptedSessionVars->bindParam('name', $name, PDO::PARAM_STR);
+             $this->SQLStatement_InsertEncryptedSessionVars->bindParam('value', $val, PDO::PARAM_STR);
              $result = $this->SQLStatement_InsertEncryptedSessionVars->execute();
 
        } else {
 
              $this->SQLStatement_InsertSessionVars->bindParam('sid', $this->sessionId, PDO::PARAM_STR, $this->sid_len);
-             $this->SQLStatement_InsertSessionVars->bindParam('nome', $nome, PDO::PARAM_STR);
-             $this->SQLStatement_InsertSessionVars->bindParam('valore', $val, PDO::PARAM_STR);
+             $this->SQLStatement_InsertSessionVars->bindParam('name', $name, PDO::PARAM_STR);
+             $this->SQLStatement_InsertSessionVars->bindParam('value', $val, PDO::PARAM_STR);
              $result = $this->SQLStatement_InsertSessionVars->execute();
-
+ 
        }
 
         return $result;

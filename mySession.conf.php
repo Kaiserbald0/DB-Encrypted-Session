@@ -1,12 +1,14 @@
-<?PHP
+<?php
 
 #Section 1: DATABASE
 $_MYSESSION_CONF['DATABASE_TYPE']   =   'mysql';            //PDO supported DBMS Types (for now only MySql supported)
+
 #Section 1.1: Connection data
-$_MYSESSION_CONF['DB_DATABASE']     =   'test';             //DB Name
-$_MYSESSION_CONF['DB_PASSWORD']     =   'root';             //MySql password
-$_MYSESSION_CONF['DB_SERVER']       =   'localhost';        //MySql server
-$_MYSESSION_CONF['DB_USERNAME']     =   'root';             //MySql user
+$_MYSESSION_CONF['DB_DATABASE']     =   'sql28591';                         //DB Name
+$_MYSESSION_CONF['DB_PASSWORD']     =   'pL8!iY8!';                         //MySql password
+$_MYSESSION_CONF['DB_SERVER']       =   'sql2.freesqldatabase.com';         //MySql server
+$_MYSESSION_CONF['DB_USERNAME']     =   'sql28591';                         //MySql user
+
 #Section 1.2: Table and columns name
 $_MYSESSION_CONF['TB_NAME_SESSION'] =   'mySession_Sessions';       //Table name
 $_MYSESSION_CONF['SID']             =   'sid';
@@ -36,4 +38,4 @@ $_MYSESSION_CONF['CRIPT_KEY']       =   "god";              //Encrypt Key: The s
 #Section 2.4: Hijacking Prevention
 $_MYSESSION_CONF['ENABLE_ANTI_HIJACKING'] = 1;              //Use UserAgent check to prevent Hijacking
 $_MYSESSION_CONF['ANTI_HIJACKING_SALT']   = "antiHijack";   //The salt used to adding more security to the UserAgent check
-?>
+

@@ -1,4 +1,4 @@
-<?
+<?php
 //http://localhost/phpClass/mySession/example/cookieBasedSessionUsingOverWritingPHPFunction/start.php
 include("../../mySession.class.php");
 include("../../mySession.conf.php");

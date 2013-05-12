@@ -1,4 +1,4 @@
-<?
+<?php
 
 include("../../mySession.class.php");
 include("./mySession.conf.php");
