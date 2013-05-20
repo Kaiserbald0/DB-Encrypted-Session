@@ -1,4 +1,13 @@
-mySession ReadMe   
+<pre>
+______ ______   _____                                   _              _   _____                  _               
+|  _  \| ___ \ |  ___|                                 | |            | | /  ___|                (_)              
+| | | || |_/ / | |__   _ __    ___  _ __  _   _  _ __  | |_   ___   __| | \ `--.   ___  ___  ___  _   ___   _ __  
+| | | || ___ \ |  __| | '_ \  / __|| '__|| | | || '_ \ | __| / _ \ / _` |  `--. \ / _ \/ __|/ __|| | / _ \ | '_ \ 
+| |/ / | |_/ / | |___ | | | || (__ | |   | |_| || |_) || |_ |  __/| (_| | /\__/ /|  __/\__ \\__ \| || (_) || | | |
+|___/  \____/  \____/ |_| |_| \___||_|    \__, || .__/  \__| \___| \__,_| \____/  \___||___/|___/|_| \___/ |_| |_|
+                                           __/ || |                                                               
+                                          |___/ |_|                                                                  
+</pre>
 ================================
 
 Read this file before use mySession class.
@@ -16,11 +25,13 @@ C9 Workspace: https://c9.io/kaiserbaldo/db-encrypted-session
 
 The lastest version is: MySession 2.1
 
+
 Before using mysessionClass check the md5sum.
 
-88e16a572ac89e1ebc4336f0a390587b  mySession.class.php
-7d40e2a2e21b07da2c047231c10c0461  mysql.sql
-2c71248345e58b49596461b1d07e3c68  mySession.conf.php
+* 88e16a572ac89e1ebc4336f0a390587b  mySession.class.php
+* 7d40e2a2e21b07da2c047231c10c0461  mysql.sql
+* 2c71248345e58b49596461b1d07e3c68  mySession.conf.php
+
 
 If some file do not pass the md5sum test, ask for the
 file writing an email to: kaiserbaldo[]gmail.com
@@ -29,7 +40,7 @@ Thanks for reading
 
 
 My Session: Change Log 
-================================
+----------------------
 
 Version: 2.1 
 Release Date: 12/05/2013
